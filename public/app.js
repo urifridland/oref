@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dataDiv.className = `data-box-${isNew?'new':'old'}`;
       dataDiv.innerHTML = `<h2>${alert.title}</h2>
                           <${wrapperElement}><strong>תאריך:</strong> ${alert.alertDate}</${wrapperElement}>
-                          <${wrapperElement}><strong>עיר:</strong> ${alert.data}</${wrapperElement}>
+                          <${wrapperElement}><strong>עיר:</strong> ${alert.cityInfo ? alert.cityInfo.name : alert.data}</${wrapperElement}>
                           <${wrapperElement}><strong>אזור:</strong> ${alert.cityInfo && alert.cityInfo.zone}</${wrapperElement}>`;
       if (alert.cityInfo) {
         const timeSinceCountdown = parseInt((new Date() - new Date(alert.alertDate) - alert.cityInfo.countdown*1000)/1000)

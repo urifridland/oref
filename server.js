@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.get('ping', (req, res) => {
+app.get('/ping', (req, res) => {
     res.send('pong');
   });
 app.use(express.static('public'));
