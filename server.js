@@ -15,19 +15,23 @@ app.get('ping', (req, res) => {
 app.use(express.static('public'));
 
 const getAlerts = async () => {
-    const response = await axios.get('https://www.oref.org.il/WarningMessages/History/AlertsHistory.json');
-    const data = response.data;
-    const citiesData = loadLocalFile('./public/cities.json');
-    const citiesDictData = loadLocalFile('./public/citiesDict.json');
-    const citiesCoordinates = loadLocalFile('./public/citiesCoordinatesReversed.json');
-    const mergedData = data.map(item => {
-        const city = item['data']
-        const cityInfo = citiesData.filter(oneCity => oneCity['value'] == city)[0]
-        const cityDictInfo = citiesDictData.cities[city]
-        cityDictInfo.coordinates = citiesCoordinates[cityDictInfo.id]
-        return {... item, cityInfo, cityDictInfo}
-    })
-    return mergedData
+    try {
+        const response = await axios.get('https://www.oref.org.il/WarningMessages/History/AlertsHistory.json');
+        const data = response.data;
+        const citiesData = loadLocalFile('./public/cities.json');
+        const citiesDictData = loadLocalFile('./public/citiesDict.json');
+        const citiesCoordinates = loadLocalFile('./public/citiesCoordinatesReversed.json');
+        const mergedData = data.map(item => {
+            const city = item['data']
+            const cityInfo = citiesData.filter(oneCity => oneCity['value'] == city)[0]
+            const cityDictInfo = citiesDictData.cities[city]
+            cityDictInfo.coordinates = citiesCoordinates[cityDictInfo.id]
+            return {... item, cityInfo, cityDictInfo}
+        })
+        return mergedData
+    } catch (error) {
+        console.log(`error in request - ${error}`)
+    }
 }
 
 let alerts = []
